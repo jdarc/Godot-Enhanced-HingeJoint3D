@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://bpofgcl63a5af"]
+
+[ext_resource type="PackedScene" uid="uid://dtmarungm221j" path="res://example/scenes/ground.tscn" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://bcsead365yokp" path="res://example/main.gd" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://0r7yw7a0wx3s" path="res://example/scenes/robot/robot.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://d1xt3s0yb6jvk" path="res://example/free_look_camera.gd" id="3_dhpm0"]
+[ext_resource type="PackedScene" uid="uid://bev76tkdo33fj" path="res://example/scenes/ui/ui.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://dwl1gpeflfshh" path="res://example/scenes/ball.tscn" id="5_lquwl"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ig7tw"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_0xm2m"]
+sky_material = SubResource("ProceduralSkyMaterial_ig7tw")
+
+[sub_resource type="Environment" id="Environment_h2yge"]
+background_mode = 2
+sky = SubResource("Sky_0xm2m")
+tonemap_mode = 2
+tonemap_exposure = 2.0
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_0xm2m"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 500.0
+dof_blur_far_transition = -1.0
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_1bvp3")
+
+[node name="UI" parent="." instance=ExtResource("3_h2yge")]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 307.0
+offset_bottom = 210.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h2yge")
+camera_attributes = SubResource("CameraAttributesPractical_0xm2m")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+shadow_bias = 0.02
+shadow_opacity = 0.95
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.82311743, -0.22778139, 0.52018595, 0, 0.91602796, 0.40111455, -0.5678713, 0.3301644, -0.7539987, 13.461716, 19.120647, -19.512487)
+fov = 50.0
+far = 2000.0
+script = ExtResource("3_dhpm0")
+default_velocity = 15.0
+
+[node name="Ground" parent="." instance=ExtResource("1_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="Robot" parent="." instance=ExtResource("1_ig7tw")]
+
+[node name="Ball" parent="." instance=ExtResource("5_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.99729, 3, -7.2369137)
+
+[node name="Ball2" parent="." instance=ExtResource("5_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.360569, 3, 9.6399)
+
+[node name="Ball3" parent="." instance=ExtResource("5_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.067848206, 3, -11.213158)
+
+[node name="Ball4" parent="." instance=ExtResource("5_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8007555, 3, 10.906343)
+
+[connection signal="slider_changed" from="UI" to="." method="_on_ui_slider_changed"]

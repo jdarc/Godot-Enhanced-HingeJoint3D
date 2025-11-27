@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3 uid="uid://0r7yw7a0wx3s"]
+
+[ext_resource type="Script" uid="uid://d4dg0m6wfuyum" path="res://example/scenes/robot/robot.gd" id="1_yhfw1"]
+[ext_resource type="PackedScene" uid="uid://ccjpmilst073v" path="res://example/scenes/robot/parts/base.tscn" id="2_b0s5f"]
+[ext_resource type="Script" uid="uid://b8t5ci4mpuc6t" path="res://addons/enhancedhingejoint3d/enhanced_hingejoint3d.gd" id="2_dfm56"]
+[ext_resource type="PackedScene" uid="uid://bdtxpm72yg7ge" path="res://example/scenes/robot/parts/arm.tscn" id="3_brc3o"]
+[ext_resource type="PackedScene" uid="uid://bsox7p6nh6anr" path="res://example/scenes/robot/parts/wrist.tscn" id="4_q320a"]
+[ext_resource type="PackedScene" uid="uid://ctwi5ijayhog3" path="res://example/scenes/robot/parts/claw_1.tscn" id="5_m57sv"]
+[ext_resource type="PackedScene" uid="uid://brlweqqnwlvja" path="res://example/scenes/robot/parts/claw_2.tscn" id="6_oy5uk"]
+
+[node name="Robot" type="Node3D"]
+script = ExtResource("1_yhfw1")
+
+[node name="Base" parent="." instance=ExtResource("2_b0s5f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.574, 0)
+linear_damp_mode = 1
+linear_damp = 0.1
+angular_damp_mode = 1
+angular_damp = 0.1
+
+[node name="Arm" parent="." instance=ExtResource("3_brc3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.422, 0)
+linear_damp_mode = 1
+linear_damp = 0.1
+angular_damp_mode = 1
+angular_damp = 0.1
+
+[node name="Wrist" parent="." instance=ExtResource("4_q320a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.710073, 2.6559064e-07)
+linear_damp_mode = 1
+linear_damp = 0.1
+angular_damp_mode = 1
+angular_damp = 0.1
+
+[node name="Claw1" parent="." instance=ExtResource("5_m57sv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.697, 14.995, 0)
+linear_damp_mode = 1
+linear_damp = 0.1
+angular_damp_mode = 1
+angular_damp = 0.1
+
+[node name="Claw2" parent="." instance=ExtResource("6_oy5uk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.697, 14.995, 0)
+linear_damp_mode = 1
+linear_damp = 0.1
+angular_damp_mode = 1
+angular_damp = 0.1
+
+[node name="BaseToWorld" type="HingeJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+node_a = NodePath("../Base")
+script = ExtResource("2_dfm56")
+metadata/_custom_type_script = "uid://b8t5ci4mpuc6t"
+
+[node name="ArmToBase" type="HingeJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.3471327, 2.1911153e-05)
+node_a = NodePath("../Base")
+node_b = NodePath("../Arm")
+angular_limit/enable = true
+angular_limit/upper = 1.9198622
+angular_limit/lower = -1.9198622
+script = ExtResource("2_dfm56")
+metadata/_custom_type_script = "uid://b8t5ci4mpuc6t"
+
+[node name="WristToArm" type="HingeJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 12.63093, 2.6559064e-07)
+node_a = NodePath("../Arm")
+node_b = NodePath("../Wrist")
+script = ExtResource("2_dfm56")
+metadata/_custom_type_script = "uid://b8t5ci4mpuc6t"
+
+[node name="Claw1ToWrist" type="HingeJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4407209, 13.595029, 2.6559064e-07)
+node_a = NodePath("../Claw1")
+node_b = NodePath("../Wrist")
+angular_limit/enable = true
+angular_limit/upper = 0.7853982
+angular_limit/lower = -0.47996554
+script = ExtResource("2_dfm56")
+metadata/_custom_type_script = "uid://b8t5ci4mpuc6t"
+
+[node name="Claw2ToWrist" type="HingeJoint3D" parent="."]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1.4407214, 13.595028, 2.6559064e-07)
+node_a = NodePath("../Claw2")
+node_b = NodePath("../Wrist")
+angular_limit/enable = true
+angular_limit/upper = 0.7853982
+angular_limit/lower = -0.47996554
+script = ExtResource("2_dfm56")
+metadata/_custom_type_script = "uid://b8t5ci4mpuc6t"
